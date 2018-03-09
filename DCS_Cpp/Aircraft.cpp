@@ -39,11 +39,11 @@ void Aircraft::decode(std::string msg)
 		else if (var_name.compare("name") == 0)
 			callsign = val;
 		else if (var_name.compare("latitude") == 0)
-			latitude = atof(val.c_str());
+			latitude = atof(val.c_str())/1e7;
 		else if (var_name.compare("longitude") == 0)
-			longitude = atof(val.c_str());
+			longitude = atof(val.c_str())/1e7;
 		else if (var_name.compare("altitude") == 0)
-			altitude = atof(val.c_str())*3.28084;
+			altitude = (atof(val.c_str())*3.28084)/100;
 		else if (var_name.compare("radar_altitude") == 0)
 			radar_altitude = atof(val.c_str())*3.28084;
 		else if (var_name.compare("heading") == 0)
@@ -59,7 +59,7 @@ void Aircraft::decode(std::string msg)
 		else if (var_name.compare("gyro_y") == 0)
 			gyro_y = atof(val.c_str());
 		else if (var_name.compare("gyro_z") == 0)
-			gyro_z = atof(val.c_str());
+			gyro_z = atof(val.c_str())*-1;
 		else if (var_name.compare("accel_x") == 0)
 			accel_x = atof(val.c_str());
 		else if (var_name.compare("accel_y") == 0)
@@ -75,115 +75,117 @@ void Aircraft::decode(std::string msg)
 	}
 }
 
-void Aircraft::encode(unsigned char* msg_out, int subject) 
+void Aircraft::encode(unsigned char* msg_out_section, int subject)
 {
-	uint8_t *vp;
+	unsigned char* vp;
 
-	ZeroMemory(msg_out, 41);
-
-	msg_out[0] = 68;
-	msg_out[1] = 65;
-	msg_out[2] = 84;
-	msg_out[3] = 65;
-	msg_out[4] = 0;
+	ZeroMemory(msg_out_section, 36);
 
 	// Subject of the message
-	msg_out[5] = subject;
+	msg_out_section[0] = subject;
 
 	// Lat, long, alt, radalt
 	if (subject == 20)
 	{
-		vp = (uint8_t*)&latitude;
-		msg_out[9] = vp[0];
-		msg_out[10] = vp[1];
-		msg_out[11] = vp[2];
-		msg_out[12] = vp[3];
+		vp = (unsigned char*)&latitude;
+		msg_out_section[4] = vp[0];
+		msg_out_section[5] = vp[1];
+		msg_out_section[6] = vp[2];
+		msg_out_section[7] = vp[3];
 
-		vp = (uint8_t*)&longitude;
-		msg_out[13] = vp[0];
-		msg_out[14] = vp[1];
-		msg_out[15] = vp[2];
-		msg_out[16] = vp[3];
+		vp = (unsigned char*)&longitude;
+		msg_out_section[8] = vp[0];
+		msg_out_section[9] = vp[1];
+		msg_out_section[10] = vp[2];
+		msg_out_section[11] = vp[3];
 
-		vp = (uint8_t*)&altitude;
-		msg_out[17] = vp[0];
-		msg_out[18] = vp[1];
-		msg_out[19] = vp[2];
-		msg_out[20] = vp[3];
+		vp = (unsigned char*)&altitude;
+		msg_out_section[12] = vp[0];
+		msg_out_section[13] = vp[1];
+		msg_out_section[14] = vp[2];
+		msg_out_section[15] = vp[3];
 
-		vp = (uint8_t*)&radar_altitude;
-		msg_out[21] = vp[0];
-		msg_out[22] = vp[1];
-		msg_out[23] = vp[2];
-		msg_out[24] = vp[3];
+		vp = (unsigned char*)&radar_altitude;
+		msg_out_section[16] = vp[0];
+		msg_out_section[17] = vp[1];
+		msg_out_section[18] = vp[2];
+		msg_out_section[19] = vp[3];
 	}
 	else if (subject == 3)
 	{
-		vp = (uint8_t*)&indicated_airspeed;
-		msg_out[13] = vp[0];
-		msg_out[14] = vp[1];
-		msg_out[15] = vp[2];
-		msg_out[16] = vp[3];
+		vp = (unsigned char*)&indicated_airspeed;
+		msg_out_section[8] = vp[0];
+		msg_out_section[9] = vp[1];
+		msg_out_section[10] = vp[2];
+		msg_out_section[11] = vp[3];
+	}
+	else if (subject == 1)
+	{
+		vp = (unsigned char*)&t;
+		msg_out_section[12] = vp[0];
+		msg_out_section[13] = vp[1];
+		msg_out_section[14] = vp[2];
+		msg_out_section[15] = vp[3];
 	}
 	else if (subject == 17)
 	{
-		vp = (uint8_t*)&pitch;
-		msg_out[9] = vp[0];
-		msg_out[10] = vp[1];
-		msg_out[11] = vp[2];
-		msg_out[12] = vp[3];
+		vp = (unsigned char*)&pitch;
+		msg_out_section[4] = vp[0];
+		msg_out_section[5] = vp[1];
+		msg_out_section[6] = vp[2];
+		msg_out_section[7] = vp[3];
 
-		vp = (uint8_t*)&bank;
-		msg_out[13] = vp[0];
-		msg_out[14] = vp[1];
-		msg_out[15] = vp[2];
-		msg_out[16] = vp[3];
+		vp = (unsigned char*)&bank;
+		msg_out_section[8] = vp[0];
+		msg_out_section[9] = vp[1];
+		msg_out_section[10] = vp[2];
+		msg_out_section[11] = vp[3];
 
-		vp = (uint8_t*)&heading;
-		msg_out[17] = vp[0];
-		msg_out[18] = vp[1];
-		msg_out[19] = vp[2];
-		msg_out[20] = vp[3];
+		vp = (unsigned char*)&heading;
+		msg_out_section[12] = vp[0];
+		msg_out_section[13] = vp[1];
+		msg_out_section[14] = vp[2];
+		msg_out_section[15] = vp[3];
 	}
 	else if (subject == 16)
 	{
-		vp = (uint8_t*)&gyro_x;
-		msg_out[9] = vp[0];
-		msg_out[10] = vp[1];
-		msg_out[11] = vp[2];
-		msg_out[12] = vp[3];
+		vp = (unsigned char*)&gyro_x;
+		msg_out_section[4] = vp[0];
+		msg_out_section[5] = vp[1];
+		msg_out_section[6] = vp[2];
+		msg_out_section[7] = vp[3];
 
-		vp = (uint8_t*)&gyro_y;
-		msg_out[13] = vp[0];
-		msg_out[14] = vp[1];
-		msg_out[15] = vp[2];
-		msg_out[16] = vp[3];
+		vp = (unsigned char*)&gyro_y;
+		msg_out_section[8] = vp[0];
+		msg_out_section[9] = vp[1];
+		msg_out_section[10] = vp[2];
+		msg_out_section[11] = vp[3];
 
-		vp = (uint8_t*)&gyro_z;
-		msg_out[17] = vp[0];
-		msg_out[18] = vp[1];
-		msg_out[19] = vp[2];
-		msg_out[20] = vp[3];
+		vp = (unsigned char*)&gyro_z;
+		msg_out_section[12] = vp[0];
+		msg_out_section[13] = vp[1];
+		msg_out_section[14] = vp[2];
+		msg_out_section[15] = vp[3];
 	}
 	else if (subject == 4)
 	{
-		vp = (uint8_t*)&accel_x;
-		msg_out[25] = vp[0];
-		msg_out[26] = vp[1];
-		msg_out[27] = vp[2];
-		msg_out[28] = vp[3];
+		vp = (unsigned char*)&accel_x;
+		msg_out_section[20] = vp[0];
+		msg_out_section[21] = vp[1];
+		msg_out_section[22] = vp[2];
+		msg_out_section[23] = vp[3];
 
-		vp = (uint8_t*)&accel_y;
-		msg_out[29] = vp[0];
-		msg_out[30] = vp[1];
-		msg_out[31] = vp[2];
-		msg_out[32] = vp[3];
+		vp = (unsigned char*)&accel_y;
+		msg_out_section[24] = vp[0];
+		msg_out_section[25] = vp[1];
+		msg_out_section[26] = vp[2];
+		msg_out_section[27] = vp[3];
 
-		vp = (uint8_t*)&accel_z;
-		msg_out[33] = vp[0];
-		msg_out[34] = vp[1];
-		msg_out[35] = vp[2];
-		msg_out[36] = vp[3];
+		vp = (unsigned char*)&accel_z;
+		msg_out_section[28] = vp[0];
+		msg_out_section[29] = vp[1];
+		msg_out_section[30] = vp[2];
+		msg_out_section[31] = vp[3];
 	}
 	return;
 

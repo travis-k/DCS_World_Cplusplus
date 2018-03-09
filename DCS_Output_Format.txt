@@ -17,6 +17,16 @@ Next, up to 8 4 byte segments with content
 
 Ex. for subject 20
 
+[0-3] = subject
+[4-7] = data[1]
+[8-11] = data[2]
+[12-15] = data[3]
+[16-19] = data[4]
+[20-23] = data[5]
+[24-27] = data[6]
+[28-31] = data[7]
+[32-35] = data[8]
+
 [9-12] = lat
 [13-16] = long
 [17-20] = alt
