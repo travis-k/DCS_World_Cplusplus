@@ -1,0 +1,59 @@
+		Xplane																DCS
+Body Ref.														
+  +X 	+Y 	   +Z 													  +X 	+Y 	   +Z 						
+Right 	Up 	   Aft 													 Fwd    Up     Right
+							
+Global Ref.							
+  +X    +Y     +Z                   							   	  +X    +Y     +Z
+East   Up      South	            							     North  Up    East
+
+
+
+(1)		Times
+[3]		missn, Times
+
+(3)		Speeds
+[2]		Vind, keas 		(knots)										LoGetIndicatedAirSpeed 	(m/s)
+
+(4)		Mach, VVI, g-load
+[5]		Gload, norml 												LoGetAccelerationUnits.z
+[6]		Gload, axial 												LoGetAccelerationUnits.x * -1
+[7]		Gload, side 												LoGetAccelerationUnits.y
+
+(13)	Trim, flap, slats, & speedbrakes
+
+(16)	Augular velocities
+[1]		Q, rad/s	Pitch rate 		+Pitch = Up 					LoGetAngularVelocity.z 	(rad/s)
+[2]		P, rad/s	Roll rate 		+Roll = Right 					LoGetAngularVelocity.x 	(rad/s)
+[3]		R, rad/s	Yaw rate 		+Yaw = Right 					LoGetAngularVelocity.y 	(rad/s)
+
+
+(17)	Pitch, roll, & headings
+[1]		pitch, deg	measured in body-axis Euler angles 				LoGetObjectById.Pitch 	(rad)
+[2]		roll, deg	 												LoGetObjectById.Bank 	(rad)
+[3]		hding, true 												LoGetObjectById.Heading	(rad)
+
+
+(18)	Angle of attack, sideslip, & paths
+
+
+(20)	Latitude, longitude, & altitude
+[1]		lat, deg													LoGetObjectById.LatLonAlt.Lat	(deg)
+[2]		lon, deg													LoGetObjectById.LatLonAlt.Lon 	(deg)
+[3]		alt, ftmsl													LoGetAltitudeAboveSeaLevel	(m)
+[4]		alt, ftagl 													LoGetAltitudeAboveGroundLevel   (m)
+
+(21)	Location, velocity, & distance traveled
+[1]		X, m	Relative to the inertial axes.	(East) 				LoGetObjectById.Positin.z 		(m)
+[2]		Y, m	Relative to the inertial axes.	(Up) 				LoGetObjectById.Positin.y 		(m)
+[3]		Z, m	Relative to the inertial axes.	(South) 			LoGetObjectById.Positin.x * -1 	(m)
+[4]		vX, m/s	Relative to the inertial axes.	(East) 				LoGetVectorVelocity.z 			(m/s)
+[5]		vY, m/s	Relative to the inertial axes.	(Up) 				LoGetVectorVelocity.y 			(m/s)
+[6]		vZ, m/s	Relative to the inertial axes. 						LoGetVectorVelocity.x * -1 		(m/s)
+
+(25)	Throttle (commanded)
+(29)	Mixture setting
+(37)	
+(38)
+(39)
+(58)
