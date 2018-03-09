@@ -39,9 +39,9 @@ void Aircraft::decode(std::string msg)
 		else if (var_name.compare("name") == 0)
 			callsign = val;
 		else if (var_name.compare("latitude") == 0)
-			latitude = atof(val.c_str())/1e7;
+			latitude = atof(val.c_str());
 		else if (var_name.compare("longitude") == 0)
-			longitude = atof(val.c_str())/1e7;
+			longitude = atof(val.c_str());
 		else if (var_name.compare("altitude") == 0)
 			altitude = (atof(val.c_str())*3.28084)/100;
 		else if (var_name.compare("radar_altitude") == 0)
@@ -56,16 +56,18 @@ void Aircraft::decode(std::string msg)
 			indicated_airspeed = atof(val.c_str())*1.9349;
 		else if (var_name.compare("gyro_x") == 0)
 			gyro_x = atof(val.c_str());
+		// This isnt a mistake either
 		else if (var_name.compare("gyro_y") == 0)
-			gyro_y = atof(val.c_str());
-		else if (var_name.compare("gyro_z") == 0)
 			gyro_z = atof(val.c_str())*-1;
+		else if (var_name.compare("gyro_z") == 0)
+			gyro_y = atof(val.c_str());
 		else if (var_name.compare("accel_x") == 0)
 			accel_x = atof(val.c_str());
+		// The below is not a mistake
 		else if (var_name.compare("accel_y") == 0)
-			accel_y = atof(val.c_str());
-		else if (var_name.compare("accel_z") == 0)
 			accel_z = atof(val.c_str());
+		else if (var_name.compare("accel_z") == 0)
+			accel_y = atof(val.c_str())*-1;
 
 		start = finish;
 
@@ -149,13 +151,13 @@ void Aircraft::encode(unsigned char* msg_out_section, int subject)
 	}
 	else if (subject == 16)
 	{
-		vp = (unsigned char*)&gyro_x;
+		vp = (unsigned char*)&gyro_y;
 		msg_out_section[4] = vp[0];
 		msg_out_section[5] = vp[1];
 		msg_out_section[6] = vp[2];
 		msg_out_section[7] = vp[3];
 
-		vp = (unsigned char*)&gyro_y;
+		vp = (unsigned char*)&gyro_x;
 		msg_out_section[8] = vp[0];
 		msg_out_section[9] = vp[1];
 		msg_out_section[10] = vp[2];
@@ -169,19 +171,19 @@ void Aircraft::encode(unsigned char* msg_out_section, int subject)
 	}
 	else if (subject == 4)
 	{
-		vp = (unsigned char*)&accel_x;
+		vp = (unsigned char*)&accel_z;
 		msg_out_section[20] = vp[0];
 		msg_out_section[21] = vp[1];
 		msg_out_section[22] = vp[2];
 		msg_out_section[23] = vp[3];
 
-		vp = (unsigned char*)&accel_y;
+		vp = (unsigned char*)&accel_x;
 		msg_out_section[24] = vp[0];
 		msg_out_section[25] = vp[1];
 		msg_out_section[26] = vp[2];
 		msg_out_section[27] = vp[3];
 
-		vp = (unsigned char*)&accel_z;
+		vp = (unsigned char*)&accel_y;
 		msg_out_section[28] = vp[0];
 		msg_out_section[29] = vp[1];
 		msg_out_section[30] = vp[2];

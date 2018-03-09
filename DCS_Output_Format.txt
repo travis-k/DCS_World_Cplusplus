@@ -27,17 +27,6 @@ Ex. for subject 20
 [28-31] = data[7]
 [32-35] = data[8]
 
-[9-12] = lat
-[13-16] = long
-[17-20] = alt
-[21-24] = rad alt
-
-[25-28] = zeros
-[29-32] = zeros
-[33-36] = zeros
-[37-40] = zeros
-
-
 LatLonAlt           = 20
         case LatLonAlt: 
             loc.lat = data[1] * 1e7;
