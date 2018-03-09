@@ -26,13 +26,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DCS_Cpp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="decode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Aircraft.cpp">

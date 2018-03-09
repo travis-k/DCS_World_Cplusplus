@@ -1,0 +1,86 @@
+Data is sent as char array
+
+First five bytes send "DATA "
+[0] = 68
+[1] = 65
+[2] = 84
+[3] = 65
+[4] = 0
+
+Next is a 4 bytes
+[5] = Message subject
+[6] = 0
+[7] = 0
+[8] = 0
+
+Next, up to 8 4 byte segments with content
+
+Ex. for subject 20
+
+[9-12] = lat
+[13-16] = long
+[17-20] = alt
+[21-24] = rad alt
+
+[25-28] = zeros
+[29-32] = zeros
+[33-36] = zeros
+[37-40] = zeros
+
+
+LatLonAlt           = 20
+        case LatLonAlt: 
+            loc.lat = data[1] * 1e7;
+            loc.lng = data[2] * 1e7;
+            loc.alt = data[3] * FEET_TO_METERS * 100.0f;
+            float hagl = data[4] * FEET_TO_METERS;
+            ground_level = loc.alt * 0.01f - hagl;
+            break;
+
+Speed               = 3
+        case Speed:
+            airspeed = data[2] * KNOTS_TO_METERS_PER_SECOND;
+            airspeed_pitot = airspeed;
+            break;
+
+
+PitchRollHeading    = 17
+        case PitchRollHeading:
+            float roll, pitch, yaw;
+            pitch = radians(data[1]);
+            roll = radians(data[2]);
+            yaw = radians(data[3]);
+            dcm.from_euler(roll, pitch, yaw);
+            break;
+
+LocVelDistTraveled  = 21
+        case LocVelDistTraveled:
+            pos.y = data[1];
+            pos.z = -data[2];
+            pos.x = -data[3];
+            velocity_ef.y = data[4];
+            velocity_ef.z = -data[5];
+            velocity_ef.x = -data[6];
+            break;
+
+AngularVelocities   = 16
+        case AngularVelocities:
+            gyro.y = data[1];
+            gyro.x = data[2];
+            gyro.z = data[3];
+            break;
+
+Gload               = 4
+        case Gload:
+            accel_body.z = -data[5] * GRAVITY_MSS;
+            accel_body.x = data[6] * GRAVITY_MSS;
+            accel_body.y = data[7] * GRAVITY_MSS;
+            break;
+
+EngineRPM           = 37
+        case EngineRPM:
+            rpm1 = data[1];
+            break;
+
+
+

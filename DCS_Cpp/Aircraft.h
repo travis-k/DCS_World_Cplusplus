@@ -5,7 +5,7 @@
 
 class Aircraft {
 public:
-	double t, latitude, longitude, altitude, heading, pitch, bank;
+	float t, latitude, longitude, altitude, heading, pitch, bank;
 	std::string callsign;
 	void decode(std::string);
 };

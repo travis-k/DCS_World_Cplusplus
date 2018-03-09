@@ -16,29 +16,10 @@ end
 
 function LuaExportAfterNextFrame()
 	local t = LoGetModelTime()
-	local o = LoGetSelfData()
-	local tas = LoGetTrueAirSpeed()
-	local alpha = LoGetAngleOfAttack()
+	local name = LoGetPilotName()
+	local o = LoGetSelfData();
 
-	socket.try(c:send(string.format(
-		"time = %.4f, 
-		lat = %.4f, 
-		long = %.4f, 
-		alt = %.4f, 
-		airspeed = %.4f,
-		alpha = %.4f, 
-		heading = %.4f, 
-		pitch = %.4f, 
-		bank = %.4f\n", 
-		t, 
-		name, 
-		o.LatLongAlt.Lat, 
-		o.LatLongAlt.Long, 
-		o.LatLongAlt.Alt, 
-		o.Heading, 
-		o.Pitch, 
-		o.Bank
-		)))
+	socket.try(c:send(string.format("t = %.4f, name = %s, latitude = %.4f, longitude = %.4f, altitude = %.4f, heading = %.4f, pitch = %.4f, bank = %.4f\n", t, name, o.LatLongAlt.Lat, o.LatLongAlt.Long, o.LatLongAlt.Alt, o.Heading, o.Pitch, o.Bank)))
 end
 
 function LuaExportStop()
