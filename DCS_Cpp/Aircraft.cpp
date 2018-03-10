@@ -34,40 +34,57 @@ void Aircraft::decode(std::string msg)
 		// This is a little convoluted but it allows us to change the
 		// msg format a little easier
 		// Change later?
-		if (var_name.compare("t") == 0)
-			t = atof(val.c_str());
+		if (var_name.compare("Time") == 0)
+			Time = atof(val.c_str());
 		else if (var_name.compare("name") == 0)
 			callsign = val;
-		else if (var_name.compare("latitude") == 0)
-			latitude = atof(val.c_str());
-		else if (var_name.compare("longitude") == 0)
-			longitude = atof(val.c_str());
-		else if (var_name.compare("altitude") == 0)
-			altitude = (atof(val.c_str())*3.28084)/100;
-		else if (var_name.compare("radar_altitude") == 0)
-			radar_altitude = atof(val.c_str())*3.28084;
-		else if (var_name.compare("heading") == 0)
-			heading = atof(val.c_str())*57.2958;
-		else if (var_name.compare("pitch") == 0)
-			pitch = atof(val.c_str())*57.2958;
-		else if (var_name.compare("bank") == 0)
-			bank = atof(val.c_str())*57.2958;
-		else if (var_name.compare("indicated_airspeed") == 0)
-			indicated_airspeed = atof(val.c_str())*1.9349;
-		else if (var_name.compare("gyro_x") == 0)
-			gyro_x = atof(val.c_str());
-		// This isnt a mistake either
-		else if (var_name.compare("gyro_y") == 0)
-			gyro_z = atof(val.c_str())*-1;
-		else if (var_name.compare("gyro_z") == 0)
-			gyro_y = atof(val.c_str());
-		else if (var_name.compare("accel_x") == 0)
-			accel_x = atof(val.c_str());
-		// The below is not a mistake
-		else if (var_name.compare("accel_y") == 0)
-			accel_z = atof(val.c_str());
-		else if (var_name.compare("accel_z") == 0)
-			accel_y = atof(val.c_str())*-1;
+
+		else if (var_name.compare("Vind_keas") == 0)
+			Vind_keas = atof(val.c_str());
+
+		else if (var_name.compare("Norml") == 0)
+			Norml = atof(val.c_str());
+		else if (var_name.compare("Axial") == 0)
+			Axial = atof(val.c_str())*-1;
+		else if (var_name.compare("Side") == 0)
+			Side = atof(val.c_str());
+
+		else if (var_name.compare("Q") == 0)
+			Q = atof(val.c_str());
+		else if (var_name.compare("P") == 0)
+			P = atof(val.c_str());
+		else if (var_name.compare("R") == 0)
+			R = atof(val.c_str());
+
+		else if (var_name.compare("Pitch") == 0)
+			Pitch = atof(val.c_str());
+		else if (var_name.compare("Roll") == 0)
+			Roll = atof(val.c_str());
+		else if (var_name.compare("Hding") == 0)
+			Hding = atof(val.c_str());
+
+		else if (var_name.compare("Lat") == 0)
+			Lat = atof(val.c_str());
+		else if (var_name.compare("Lon") == 0)
+			Lon = atof(val.c_str());
+		else if (var_name.compare("Alt") == 0)
+			Alt = atof(val.c_str());
+		else if (var_name.compare("RAlt") == 0)
+			RAlt = atof(val.c_str());
+
+		else if (var_name.compare("Pos_E") == 0)
+			Pos_E = atof(val.c_str());
+		else if (var_name.compare("Pos_U") == 0)
+			Pos_U = atof(val.c_str());
+		else if (var_name.compare("Pos_S") == 0)
+			Pos_S = atof(val.c_str());
+
+		else if (var_name.compare("Vel_E") == 0)
+			Vel_E = atof(val.c_str());
+		else if (var_name.compare("Vel_U") == 0)
+			Vel_U = atof(val.c_str());
+		else if (var_name.compare("Vel_S") == 0)
+			Vel_S = atof(val.c_str());
 
 		start = finish;
 
@@ -89,25 +106,25 @@ void Aircraft::encode(unsigned char* msg_out_section, int subject)
 	// Lat, long, alt, radalt
 	if (subject == 20)
 	{
-		vp = (unsigned char*)&latitude;
+		vp = (unsigned char*)&Lat;
 		msg_out_section[4] = vp[0];
 		msg_out_section[5] = vp[1];
 		msg_out_section[6] = vp[2];
 		msg_out_section[7] = vp[3];
 
-		vp = (unsigned char*)&longitude;
+		vp = (unsigned char*)&Lon;
 		msg_out_section[8] = vp[0];
 		msg_out_section[9] = vp[1];
 		msg_out_section[10] = vp[2];
 		msg_out_section[11] = vp[3];
 
-		vp = (unsigned char*)&altitude;
+		vp = (unsigned char*)&Alt;
 		msg_out_section[12] = vp[0];
 		msg_out_section[13] = vp[1];
 		msg_out_section[14] = vp[2];
 		msg_out_section[15] = vp[3];
 
-		vp = (unsigned char*)&radar_altitude;
+		vp = (unsigned char*)&RAlt;
 		msg_out_section[16] = vp[0];
 		msg_out_section[17] = vp[1];
 		msg_out_section[18] = vp[2];
@@ -115,7 +132,7 @@ void Aircraft::encode(unsigned char* msg_out_section, int subject)
 	}
 	else if (subject == 3)
 	{
-		vp = (unsigned char*)&indicated_airspeed;
+		vp = (unsigned char*)&Vind_keas;
 		msg_out_section[8] = vp[0];
 		msg_out_section[9] = vp[1];
 		msg_out_section[10] = vp[2];
@@ -123,7 +140,7 @@ void Aircraft::encode(unsigned char* msg_out_section, int subject)
 	}
 	else if (subject == 1)
 	{
-		vp = (unsigned char*)&t;
+		vp = (unsigned char*)&Time;
 		msg_out_section[12] = vp[0];
 		msg_out_section[13] = vp[1];
 		msg_out_section[14] = vp[2];
@@ -131,19 +148,19 @@ void Aircraft::encode(unsigned char* msg_out_section, int subject)
 	}
 	else if (subject == 17)
 	{
-		vp = (unsigned char*)&pitch;
+		vp = (unsigned char*)&Pitch;
 		msg_out_section[4] = vp[0];
 		msg_out_section[5] = vp[1];
 		msg_out_section[6] = vp[2];
 		msg_out_section[7] = vp[3];
 
-		vp = (unsigned char*)&bank;
+		vp = (unsigned char*)&Roll;
 		msg_out_section[8] = vp[0];
 		msg_out_section[9] = vp[1];
 		msg_out_section[10] = vp[2];
 		msg_out_section[11] = vp[3];
 
-		vp = (unsigned char*)&heading;
+		vp = (unsigned char*)&Hding;
 		msg_out_section[12] = vp[0];
 		msg_out_section[13] = vp[1];
 		msg_out_section[14] = vp[2];
@@ -151,39 +168,77 @@ void Aircraft::encode(unsigned char* msg_out_section, int subject)
 	}
 	else if (subject == 16)
 	{
-		vp = (unsigned char*)&gyro_y;
+		vp = (unsigned char*)&Q;
 		msg_out_section[4] = vp[0];
 		msg_out_section[5] = vp[1];
 		msg_out_section[6] = vp[2];
 		msg_out_section[7] = vp[3];
 
-		vp = (unsigned char*)&gyro_x;
+		vp = (unsigned char*)&P;
 		msg_out_section[8] = vp[0];
 		msg_out_section[9] = vp[1];
 		msg_out_section[10] = vp[2];
 		msg_out_section[11] = vp[3];
 
-		vp = (unsigned char*)&gyro_z;
+		vp = (unsigned char*)&R;
 		msg_out_section[12] = vp[0];
 		msg_out_section[13] = vp[1];
 		msg_out_section[14] = vp[2];
 		msg_out_section[15] = vp[3];
 	}
-	else if (subject == 4)
+	else if (subject == 21)
 	{
-		vp = (unsigned char*)&accel_z;
+		vp = (unsigned char*)&Pos_E;
+		msg_out_section[4] = vp[0];
+		msg_out_section[5] = vp[1];
+		msg_out_section[6] = vp[2];
+		msg_out_section[7] = vp[3];
+
+		vp = (unsigned char*)&Pos_U;
+		msg_out_section[8] = vp[0];
+		msg_out_section[9] = vp[1];
+		msg_out_section[10] = vp[2];
+		msg_out_section[11] = vp[3];
+
+		vp = (unsigned char*)&Pos_S;
+		msg_out_section[12] = vp[0];
+		msg_out_section[13] = vp[1];
+		msg_out_section[14] = vp[2];
+		msg_out_section[15] = vp[3];
+
+		vp = (unsigned char*)&Vel_E;
+		msg_out_section[16] = vp[0];
+		msg_out_section[17] = vp[1];
+		msg_out_section[18] = vp[2];
+		msg_out_section[19] = vp[3];
+
+		vp = (unsigned char*)&Vel_U;
 		msg_out_section[20] = vp[0];
 		msg_out_section[21] = vp[1];
 		msg_out_section[22] = vp[2];
 		msg_out_section[23] = vp[3];
 
-		vp = (unsigned char*)&accel_x;
+		vp = (unsigned char*)&Vel_S;
+		msg_out_section[24] = vp[0];
+		msg_out_section[25] = vp[1];
+		msg_out_section[26] = vp[2];
+		msg_out_section[27] = vp[3];
+	}
+	else if (subject == 4)
+	{
+		vp = (unsigned char*)&Norml;
+		msg_out_section[20] = vp[0];
+		msg_out_section[21] = vp[1];
+		msg_out_section[22] = vp[2];
+		msg_out_section[23] = vp[3];
+
+		vp = (unsigned char*)&Axial;
 		msg_out_section[24] = vp[0];
 		msg_out_section[25] = vp[1];
 		msg_out_section[26] = vp[2];
 		msg_out_section[27] = vp[3];
 
-		vp = (unsigned char*)&accel_y;
+		vp = (unsigned char*)&Side;
 		msg_out_section[28] = vp[0];
 		msg_out_section[29] = vp[1];
 		msg_out_section[30] = vp[2];

@@ -5,7 +5,7 @@
 
 class Aircraft {
 public:
-	float t, latitude, longitude, altitude, radar_altitude, heading, pitch, bank, indicated_airspeed, gyro_x, gyro_y, gyro_z, accel_x, accel_y, accel_z;
+	float Time, Vind_keas, Norml, Axial, Side, Q, P, R, Pitch, Roll, Hding, Lat, Lon, Alt, RAlt, Pos_E, Pos_U, Pos_S, Vel_E, Vel_U, Vel_S;
 	std::string callsign;
 	void decode(std::string);
 	void encode(unsigned char*, int);
