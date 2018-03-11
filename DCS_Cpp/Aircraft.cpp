@@ -86,6 +86,13 @@ void Aircraft::decode(std::string msg)
 		else if (var_name.compare("Vel_S") == 0)
 			Vel_S = atof(val.c_str());
 
+		else if (var_name.compare("Elev") == 0)
+			Elev = atof(val.c_str());
+		else if (var_name.compare("Ailr") == 0)
+			Ailr = atof(val.c_str());
+		else if (var_name.compare("Rudd") == 0)
+			Rudd = atof(val.c_str());
+
 		start = finish;
 
 		if (start > len)
@@ -243,6 +250,26 @@ void Aircraft::encode(unsigned char* msg_out_section, int subject)
 		msg_out_section[29] = vp[1];
 		msg_out_section[30] = vp[2];
 		msg_out_section[31] = vp[3];
+	}
+	else if (subject == 8)
+	{
+		vp = (unsigned char*)&Elev;
+		msg_out_section[4] = vp[0];
+		msg_out_section[5] = vp[1];
+		msg_out_section[6] = vp[2];
+		msg_out_section[7] = vp[3];
+
+		vp = (unsigned char*)&Ailr;
+		msg_out_section[8] = vp[0];
+		msg_out_section[9] = vp[1];
+		msg_out_section[10] = vp[2];
+		msg_out_section[11] = vp[3];
+
+		vp = (unsigned char*)&Rudd;
+		msg_out_section[12] = vp[0];
+		msg_out_section[13] = vp[1];
+		msg_out_section[14] = vp[2];
+		msg_out_section[15] = vp[3];
 	}
 	return;
 
